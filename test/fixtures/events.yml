@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user: 
+  type: 
+  punchtime: 1
+  log: MyText
+
+two:
+  user: 
+  type: 
+  punchtime: 1
+  log: MyText
