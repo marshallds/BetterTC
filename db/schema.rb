@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120920225258) do
+ActiveRecord::Schema.define(:version => 20120920230233) do
 
   create_table "employees", :force => true do |t|
     t.string   "firstname"
@@ -28,8 +28,16 @@ ActiveRecord::Schema.define(:version => 20120920225258) do
     t.text     "log"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "jobs"
   end
 
   add_index "events", ["user_id"], :name => "index_events_on_user_id"
+
+  create_table "jobs", :force => true do |t|
+    t.string   "name"
+    t.boolean  "active"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
 end
