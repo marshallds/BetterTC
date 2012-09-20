@@ -1,4 +1,6 @@
 BetterTC::Application.routes.draw do
+  resources :jobs
+
   resources :events
 
   resources :employees
