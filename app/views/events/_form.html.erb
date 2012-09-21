@@ -12,21 +12,21 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :user %><br />
-    <%= collection_select(:event, :user, @users, :id, :firstname, {:prompt => true}) %>  
+    <%= f.label :employee %><br />
+    <%= collection_select(:event, :employee_id, @users, :id, :firstname, {:prompt => true}) %>  
   </div>
   <div class="field">
     <%= f.label :job %><br />
     <%  %>
-    <%= collection_select(:event, :job, @jobs, :id, :name, {:prompt => true}) %>  
+    <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => true}) %>  
   </div>
   <div class="field">
-    <%= f.label :type %><br />
-    <%= select(:event, :type, @types, {:prompt => true}) %> 
+    <%= f.label :punch_type %><br />
+    <%= select(:event, :punch_type, @types, {:prompt => true}) %> 
   </div>
   <div class="field">
     <%= f.label :punchtime %><br />
-    <%= f.number_field :punchtime %>
+    <%= datetime_select :event, :punchtime %>
   </div>
   <div class="field">
     <%= f.label :log %><br />
