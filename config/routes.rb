@@ -1,9 +1,27 @@
 BetterTC::Application.routes.draw do
-  resources :jobs
+  resources :jobs do
+      resources :events do
+      collection do
+        get 'report'
+      end
+    end
+  end
 
-  resources :events
+  resources :events do
+    collection do
+      get 'report'
+    end
+  end
 
-  resources :employees
+
+  resources :employees do
+    resources :events do
+      collection do
+        get 'report'
+      end
+    end
+  end
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

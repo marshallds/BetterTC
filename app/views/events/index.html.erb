@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th>User</th>
+    <th>Job</th>
     <th>Type</th>
     <th>Punchtime</th>
     <th>Log</th>
@@ -14,6 +15,7 @@
 <% @events.each do |event| %>
   <tr>
     <td><%= event.employee.firstname %> <%= event.employee.lastname %></td>
+    <td><%= event.job.name %></td>
     <td><%= event.punch_type %></td>
     <td><%= event.punchtime %></td>
     <td><%= event.log %></td>

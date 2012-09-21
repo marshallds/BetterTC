@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    @events = Event.order :punchtime
+    @events = @events.where :employee_id => params[:employee_id] if params[:employee_id]
 
     respond_to do |format|
       format.html # index.html.erb
@@ -86,4 +87,21 @@ class EventsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # Report view
+  # GET /events/report
+  def report
+    @events = Event.order :punchtime
+    @events = @events.where :employee_id => params[:employee_id] if params[:employee_id]
+    @events = @events.where :job_id => params[:job_id] if params[:job_id]
+
+    @jobs = Job.where({:active => true})
+    @employees = Employee.order(:lastname)
+
+    respond_to do |format|
+      format.html # report.html.erb
+      format.json { render json: @events }
+    end
+  end
+
 end
