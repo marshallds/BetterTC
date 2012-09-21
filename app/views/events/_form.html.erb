@@ -13,11 +13,16 @@
 
   <div class="field">
     <%= f.label :user %><br />
-    <%= collection_select(:event, :user_id, @users, :id, :firstname, {:prompt => true}) %>
+    <%= collection_select(:event, :user, @users, :id, :firstname, {:prompt => true}) %>  
+  </div>
+  <div class="field">
+    <%= f.label :job %><br />
+    <%  %>
+    <%= collection_select(:event, :job, @jobs, :id, :name, {:prompt => true}) %>  
   </div>
   <div class="field">
     <%= f.label :type %><br />
-    <%= f.text_field :type %>
+    <%= select(:event, :type, @types, {:prompt => true}) %> 
   </div>
   <div class="field">
     <%= f.label :punchtime %><br />
