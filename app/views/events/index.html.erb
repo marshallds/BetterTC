@@ -13,8 +13,8 @@
 
 <% @events.each do |event| %>
   <tr>
-    <td><%= event.user %></td>
-    <td><%= event.type %></td>
+    <td><%= event.employee.firstname %> <%= event.employee.lastname %></td>
+    <td><%= event.punch_type %></td>
     <td><%= event.punchtime %></td>
     <td><%= event.log %></td>
     <td><%= link_to 'Show', event %></td>
