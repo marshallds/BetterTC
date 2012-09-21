@@ -17,7 +17,6 @@
   </div>
   <div class="field">
     <%= f.label :job %><br />
-    <%  %>
     <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => true}) %>  
   </div>
   <div class="field">
