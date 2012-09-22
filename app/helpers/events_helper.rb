@@ -14,7 +14,6 @@ module EventsHelper
 				end
 			end
 			job.hours /= 3600.0
-
 		end
 		jobs
 	end
