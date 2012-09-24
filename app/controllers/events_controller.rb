@@ -88,6 +88,42 @@ class EventsController < ApplicationController
     end
   end
 
+  def periods
+    rows = Array.new
+    Employee.all.each do |employee| # loop though employees
+      events = employee.events.order :punchtime
+      events.each do |event| # loop though events (events are in clock order)
+          rows.push Hash.new if ! rows.length || rows.last[:out]
+          rows.last[:in] = event.punchtime
+=begin
+        if event.punch_type == "IN"
+          if rows.last :out == nil
+            rows.last :out = event.punchtime # if there an open rows.last: uh oh, event.punchtime to currentrow.out
+          end
+          rows.push Hash.new if ! rows.length || rows.last[:out]
+          rows.last :in = event.punchtime # event.punchtime to newrow.in; event.job_id to newrow.job
+          rows.last :job = event.job_id
+        elsif event.punch_type == "OUT"
+          if rows.last :out != nil
+            rows.push Hash.new
+            rows.last :in = event.punchtime # event.punchtime to newrow.in; event.job_id to newrow.job
+            # else: event.punchtime to newrow.in; event.punchtime to newrow.out
+            rows.last :out = event.punchtime # if there is a open row: yay event.punchtime to currentrow.out
+          else 
+            rows.last :out = event.punchtime # if there is a open row: yay event.punchtime to currentrow.out
+          end
+        end  
+        currentrow :log += "\n" + event.log if event.log != nil
+=end
+
+      end
+    end
+    hash = { :log => "something" }
+    rows.push(hash)
+    rows
+  end
+
+
   # Report view
   # GET /events/report
   def report
@@ -98,9 +134,11 @@ class EventsController < ApplicationController
     @jobs = Job.where({:active => true})
     @employees = Employee.order(:lastname)
 
+    @periods = periods
+
     respond_to do |format|
       format.html # report.html.erb
-      format.json { render json: @events }
+      format.json { render json: periods }
     end
   end
 
