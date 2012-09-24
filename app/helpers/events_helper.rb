@@ -17,4 +17,18 @@ module EventsHelper
 		end
 		jobs
 	end
+
+	def periods
+		# loop though employees
+			# loop though events (events are in clock order from the controller)
+				# if event.punch_type == "IN"
+					# if there an open row: uh oh, event.punchtime to currentrow.out
+					# event.punchtime to newrow.in; event.job_id to newrow.job
+					# event.job to newrow.job
+				# if event.punch_type == "OUT"
+					# if there is a open row: yay event.punchtime to currentrow.out
+					# else: event.punchtime to newrow.in; event.punchtime to newrow.out
+				# if event.punch_type == "LOG" 
+					# currentrow.log += event.log
+	end
 end
