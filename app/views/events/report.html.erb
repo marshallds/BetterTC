@@ -1,0 +1,72 @@
+<h1>Report</h1>
+
+<h2>Totals By Job</h2>
+<table>
+  <tr>
+    <th>Job</th>
+    <th>Total Hours</th>
+  </tr>
+
+<% job_totals.each do |total| %>
+  <tr>
+    <td><%= total.name %></td>
+    <td><%= '%.2f' % total.hours %></td>
+  </tr>
+
+<% end %>
+
+</table>
+<br>
+<table>
+  <tr>
+  	    <th>Job</th>
+
+<% job_totals.each do |total| %>
+    <th><%= total.name %></th>
+
+<% end %>
+  </tr>
+<tr>
+	    <th>Total Hours</th>
+<% job_totals.each do |total| %>
+    <td><%= '%.2f' % total.hours %></td>
+
+<% end %>
+  </tr>
+
+
+</table>
+
+<h2>All Events</h2>	
+	<div class="field">
+    <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:prompt => true}) %>  
+</div>
+<div class="field">
+    <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => true}) %>  
+</div>
+<table>
+  <tr>
+    <th>User</th>
+    <th>Job</th>
+    <th>In</th>
+    <th>Out</th>
+    <th>Log</th>
+
+  </tr>
+
+<% @periods.each do |period| %>
+  <tr>
+    <td><%= period[:employee].firstname %> <%= period[:employee].lastname %></td>
+    <td><%= period[:job].name %></td>
+    <td><%= period[:in] %></td>
+    <td><%= period[:out] %></td>
+    <td><%= period[:log] %></td>
+
+  </tr>
+
+<% end %>
+
+</table>
+
+<br />
+

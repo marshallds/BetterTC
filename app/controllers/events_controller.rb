@@ -93,33 +93,30 @@ class EventsController < ApplicationController
     Employee.all.each do |employee| # loop though employees
       events = employee.events.order :punchtime
       events.each do |event| # loop though events (events are in clock order)
-          rows.push Hash.new if ! rows.length || rows.last[:out]
-          rows.last[:in] = event.punchtime
-=begin
-        if event.punch_type == "IN"
-          if rows.last :out == nil
-            rows.last :out = event.punchtime # if there an open rows.last: uh oh, event.punchtime to currentrow.out
+        if event.punch_type == "IN" || event.punch_type == 'OUT' then
+          # if there an open row: uh oh, event.punchtime to currentrow.out
+          rows.push Hash.new if ! rows.length == 0 || ! (rows.last.kind_of? Hash) || rows.last[:out]
+          # event.punchtime to newrow.in; event.job_id to newrow.job
+          if rows.last[:in] then
+            rows[-1][:out] = event.punchtime
+          else
+            rows[-1][:in] = event.punchtime
+            rows[-1][:employee] = event.employee
           end
-          rows.push Hash.new if ! rows.length || rows.last[:out]
-          rows.last :in = event.punchtime # event.punchtime to newrow.in; event.job_id to newrow.job
-          rows.last :job = event.job_id
-        elsif event.punch_type == "OUT"
-          if rows.last :out != nil
+        end
+        # event.job to newrow.job
+        if rows.last[:job] then
+          if event.job != rows.last[:job] then
             rows.push Hash.new
-            rows.last :in = event.punchtime # event.punchtime to newrow.in; event.job_id to newrow.job
-            # else: event.punchtime to newrow.in; event.punchtime to newrow.out
-            rows.last :out = event.punchtime # if there is a open row: yay event.punchtime to currentrow.out
-          else 
-            rows.last :out = event.punchtime # if there is a open row: yay event.punchtime to currentrow.out
+            rows[-1][:in] = event.punchtime
+            rows[-1][:employee] = event.employee
           end
-        end  
-        currentrow :log += "\n" + event.log if event.log != nil
-=end
+        end
+        rows[-1][:job] = event.job 
+        rows[-1][:log] = (rows[-1][:log] || "" ) + event.log
 
       end
     end
-    hash = { :log => "something" }
-    rows.push(hash)
     rows
   end
 
