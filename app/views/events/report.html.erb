@@ -50,6 +50,7 @@
     <th>Job</th>
     <th>In</th>
     <th>Out</th>
+    <th>Length</th>
     <th>Log</th>
 
   </tr>
@@ -60,6 +61,7 @@
     <td><%= period[:job].name %></td>
     <td><%= period[:in] %></td>
     <td><%= period[:out] %></td>
+    <td><%= '%.2f' % period[:length] if period[:length] != nil %></td>
     <td><%= period[:log] %></td>
 
   </tr>
@@ -69,4 +71,16 @@
 </table>
 
 <br />
+    <script src="http://newlinetechnicalinnovations.com/site/js/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+      totals();
+    });
 
+    function totals() {
+      alert('yeah');
+      $.getJSON("report.json", function(json){
+   alert("JSON Data: " + json.[1].employee);
+     });
+    }
+  </script>
