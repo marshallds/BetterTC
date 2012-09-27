@@ -30,6 +30,9 @@ class EventsController < ApplicationController
     @users = Employee.order(:lastname)
     @types = ['IN','OUT','LOG']
 
+    @event.employee_id = params[:employee_id]
+    @event.job_id = params[:job_id]
+
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @event }
@@ -48,6 +51,8 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(params[:event])
+    # @event.employee_id = params[:employee_id]
+    # @event.job_id = params[:job_id]
 
     respond_to do |format|
       if @event.save
@@ -114,7 +119,7 @@ class EventsController < ApplicationController
           end
         end
         rows[-1][:job] = event.job 
-        rows[-1][:log] = (rows[-1][:log] || "" ) + "\n" + event.log
+        rows[-1][:log] = (rows[-1][:log] || "" ) + ("\n" + event.log) if event.log
 
       end
     end

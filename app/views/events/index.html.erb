@@ -14,8 +14,8 @@
 
 <% @events.each do |event| %>
   <tr>
-    <td><%= event.employee.firstname %> <%= event.employee.lastname %></td>
-    <td><%= event.job.name %></td>
+    <td><%= event.employee.firstname if event.employee %> <%= event.employee.lastname if event.employee %></td>
+    <td><%= event.job.name if event.job %></td>
     <td><%= event.punch_type %></td>
     <td><%= event.punchtime %></td>
     <td><%= event.log %></td>
