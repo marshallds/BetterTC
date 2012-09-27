@@ -7,6 +7,8 @@ BetterTC::Application.routes.draw do
     end
   end
 
+  # match 'events/create' => 'events#create', :via => :get
+
   resources :events do
     collection do
       get 'report'

@@ -44,7 +44,7 @@
 <div class="field">
     <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => true}) %>  
 </div>
-<table>
+<table id="periods">
   <tr>
     <th>User</th>
     <th>Job</th>
@@ -71,16 +71,52 @@
 </table>
 
 <br />
-    <script src="http://newlinetechnicalinnovations.com/site/js/jquery-1.8.2.min.js"></script>
+
+<h2>Totals matrix</h2>
+<table id="matrix">
+  <tr>
+    <td></td>
+    <% @jobs.each do |job| %>
+    <td><%= job[:name] %></td>
+    <% end %>
+    <td>Total</td>
+  </tr>
+  <% @employees.each do |employee| %>
+  <tr>
+    <td>
+      <%= employee[:firstname] %> <%= employee[:lastname] %>
+    </td>
+    <% @jobs.each do |job| %>
+    <td></td>
+    <% end %>
+  </tr>
+  <% end %>
+  <tr>
+    <td>Total</td>
+        <% @jobs.each do |job| %>
+    <td></td>
+    <% end %>
+    <td></td>
+  </tr>
+</table>
+
+
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
       totals();
     });
 
     function totals() {
-      alert('yeah');
       $.getJSON("report.json", function(json){
-   alert("JSON Data: " + json.[1].employee);
+       total = 0;
+       $.each(json, function(n) {
+        if(json[n].length) {total += json[n].length}
+       })
+       console.log(total)
+       totalRow = $(jQuery('<tr class="totals"><td>Total:</td><td></td><td></td><td></td><td>' + (total).toFixed(2) + '</td><td></td></tr>'))
+       $('#periods tbody').append(totalRow)
+       $('#matrix td').last().html((total).toFixed(2));
      });
+
     }
   </script>
