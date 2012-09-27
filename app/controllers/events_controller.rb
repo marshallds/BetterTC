@@ -99,6 +99,7 @@ class EventsController < ApplicationController
           # event.punchtime to newrow.in; event.job_id to newrow.job
           if rows.last[:in] then
             rows[-1][:out] = event.punchtime
+            rows[-1][:length] = (rows.last[:out] - rows.last[:in])/3600
           else
             rows[-1][:in] = event.punchtime
             rows[-1][:employee] = event.employee
@@ -113,7 +114,7 @@ class EventsController < ApplicationController
           end
         end
         rows[-1][:job] = event.job 
-        rows[-1][:log] = (rows[-1][:log] || "" ) + event.log
+        rows[-1][:log] = (rows[-1][:log] || "" ) + "\n" + event.log
 
       end
     end

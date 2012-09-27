@@ -1,0 +1,23 @@
+<h1>Report</h1>
+
+
+<h2>Periods</h2>
+<table>
+  <tr>
+    <th>Employee</th>
+    <th>Job</th>
+    <th>In</th>
+    <th>Out</th>
+    <th>Log</th>
+  </tr>
+
+  <% @periods.each do |row| %>
+  <tr>
+    <td><%= row.employee.firstname %> <%= row.employee.lastname %></td>
+    <td><%= row.job.name %></td>
+    <td><%= row.in %></td>
+    <td><%= row.out %></td>
+    <td><%= row.log %></td>
+  </tr>
+<% end %>
+</table>
