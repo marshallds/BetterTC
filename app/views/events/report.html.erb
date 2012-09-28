@@ -37,6 +37,38 @@
 
 </table>
 
+<br />
+
+<h2>Totals matrix</h2>
+<table id="matrix">
+  <tr>
+    <td></td>
+    <% @jobs.each do |job| %>
+    <td class="job<%= job[:id] %>"><%= job[:name] %></td>
+    <% end %>
+    <td>Total</td>
+  </tr>
+  <% @employees.each do |employee| %>
+  <tr id="employee<%= employee[:id] %>">
+    <td>
+      <%= employee[:firstname] %> <%= employee[:lastname] %>
+    </td>
+    <% @jobs.each do |job| %>
+    <td class="job<%= job[:id] %>"></td>
+    <% end %>
+    <td class="total"></td>
+  </tr>
+  <% end %>
+  <tr class="total">
+    <td>Total</td>
+        <% @jobs.each do |job| %>
+    <td class="job<%= job[:id] %>"></td>
+    <% end %>
+    <td class="total"></td>
+  </tr>
+</table>
+
+
 <h2>All Events</h2>	
 	<div class="field">
     <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:prompt => true}) %>  
@@ -70,52 +102,56 @@
 
 </table>
 
-<br />
 
-<h2>Totals matrix</h2>
-<table id="matrix">
-  <tr>
-    <td></td>
-    <% @jobs.each do |job| %>
-    <td><%= job[:name] %></td>
-    <% end %>
-    <td>Total</td>
-  </tr>
-  <% @employees.each do |employee| %>
-  <tr>
-    <td>
-      <%= employee[:firstname] %> <%= employee[:lastname] %>
-    </td>
-    <% @jobs.each do |job| %>
-    <td></td>
-    <% end %>
-  </tr>
-  <% end %>
-  <tr>
-    <td>Total</td>
-        <% @jobs.each do |job| %>
-    <td></td>
-    <% end %>
-    <td></td>
-  </tr>
-</table>
 
 
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
-      totals();
+      calcTotals();
     });
 
-    function totals() {
+    function calcTotals() {
       $.getJSON("report.json", function(json){
-       total = 0;
+       total =  0;
+       var totals = {};
+
        $.each(json, function(n) {
-        if(json[n].length) {total += json[n].length}
+        if(json[n].length) {
+          var employeeId = json[n].employee.id;
+          var jobId = json[n].job.id;
+          if(totals[employeeId]) {
+            if(totals[employeeId][jobId]) {totals[employeeId][jobId] += json[n].length}
+            else {totals[employeeId][jobId] = json[n].length}
+          }
+          else {
+            totals[employeeId] = {};         
+            totals[employeeId][jobId] = json[n].length
+          }
+
+          total += json[n].length
+        }
+
        })
-       console.log(total)
+       console.log(totals)
        totalRow = $(jQuery('<tr class="totals"><td>Total:</td><td></td><td></td><td></td><td>' + (total).toFixed(2) + '</td><td></td></tr>'))
+
        $('#periods tbody').append(totalRow)
        $('#matrix td').last().html((total).toFixed(2));
+       totals['job'] = {}
+       for (var employee in totals) {
+         totals['employee'] = 0
+        for (var job in totals[employee]) {
+          var cell = $('#employee' + employee + ' .job' + job)
+          cell.html(totals[employee][job].toFixed(2))
+          totals['employee'] += totals[employee][job]
+          if (totals['job'][job]  && employee != 'job') {totals['job'][job] += totals[employee][job]}
+          else  {totals['job'][job] = totals[employee][job]}
+        }
+        $('#employee' + employee + ' .total').html(totals['employee'].toFixed(2))
+       }
+       for (var job in totals['job']) {
+        $('.total' + ' .job' + job).html(totals['job'][job].toFixed(2))
+       }
      });
 
     }
