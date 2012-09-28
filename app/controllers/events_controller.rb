@@ -29,9 +29,14 @@ class EventsController < ApplicationController
     @jobs = Job.where({:active => true})
     @users = Employee.order(:lastname)
     @types = ['IN','OUT','LOG']
+    @lastevent = Event.where({:employee_id => params[:employee_id]}).last if params[:employee_id]
+
 
     @event.employee_id = params[:employee_id]
-    @event.job_id = params[:job_id]
+    if params[:job_id] then @event.job_id = params[:job_id] 
+    elsif @lastevent.job_id then @event.job_id = @lastevent.job_id
+    else  @event.job_id = 0
+    end
 
     respond_to do |format|
       format.html # new.html.erb
