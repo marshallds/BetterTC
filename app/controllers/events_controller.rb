@@ -96,6 +96,7 @@ class EventsController < ApplicationController
   def periods
     rows = Array.new
     Employee.all.each do |employee| # loop though employees
+      rows.push Hash.new
       events = employee.events.order :punchtime
       events.each do |event| # loop though events (events are in clock order)
         if event.punch_type == "IN" || event.punch_type == 'OUT' then
