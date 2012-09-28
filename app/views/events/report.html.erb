@@ -40,6 +40,14 @@
 <br />
 
 <h2>Totals matrix</h2>
+  <div class="field">
+    Start Date
+    <%= datetime_select("startdate","",:default => 7.days.ago.at_midnight) %>
+  </div>
+  <div class="field">
+    End Date
+    <%= datetime_select("enddate","",) %>
+  </div>
 <table id="matrix">
   <tr>
     <td></td>
@@ -107,16 +115,45 @@
 
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
-      calcTotals();
+
+       var startdate = updateDate('start')
+       var enddate = updateDate('end')
+
+      $('[id^=startdate]').change(function() {
+        startdate = updateDate('start');
+        calcTotals(startdate,enddate)
+      })
+      $('[id^=enddate]').change(function() {
+        enddate = updateDate('end');
+        calcTotals(startdate,enddate)
+      })
+
+      calcTotals(startdate,enddate);
     });
 
-    function calcTotals() {
+    function updateDate(startOrEnd) {
+      var newdate = "20"
+
+      for (var i = 1; i<=5; i++) {
+        if (startOrEnd == 'start') {newdate += ("0" + $('#startdate__' + i +'i').val()).slice(-2)}
+        else if (startOrEnd == 'end') {newdate += ("0" + $('#enddate__' + i +'i').val()).slice(-2)}
+
+        if (i == 1 || i == 2) {newdate += "-"}
+        else if (i == 3) {newdate += " "}
+        else if (i == 4) {newdate += ":"}
+      }
+
+      return newdate
+    }
+
+    function calcTotals(startdate,enddate) {
       $.getJSON("report.json", function(json){
        total =  0;
        var totals = {};
 
+
        $.each(json, function(n) {
-        if(json[n].length) {
+        if(json[n].length && json[n].in >= startdate && json[n].out <= enddate) {
           var employeeId = json[n].employee.id;
           var jobId = json[n].job.id;
           if(totals[employeeId]) {
@@ -132,11 +169,14 @@
         }
 
        })
-       console.log(totals)
-       totalRow = $(jQuery('<tr class="totals"><td>Total:</td><td></td><td></td><td></td><td>' + (total).toFixed(2) + '</td><td></td></tr>'))
 
+       totalRow = $(jQuery('<tr class="totals"><td>Total:</td><td></td><td></td><td></td><td>' + (total).toFixed(2) + '</td><td></td></tr>'))
+       
+       $('#periods .totals').remove()
        $('#periods tbody').append(totalRow)
+
        $('#matrix td').last().html((total).toFixed(2));
+
        totals['job'] = {}
        for (var employee in totals) {
          totals['employee'] = 0
