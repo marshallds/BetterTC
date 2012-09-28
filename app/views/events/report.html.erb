@@ -50,17 +50,17 @@
   </div>
 <table id="matrix">
   <tr>
-    <td></td>
+    <th></th>
     <% @jobs.each do |job| %>
-    <td class="job<%= job[:id] %>"><%= job[:name] %></td>
+    <th class="job<%= job[:id] %>"><%= job[:name] %></th>
     <% end %>
-    <td>Total</td>
+    <th>Total</th>
   </tr>
   <% @employees.each do |employee| %>
   <tr id="employee<%= employee[:id] %>">
-    <td>
+    <th>
       <%= employee[:firstname] %> <%= employee[:lastname] %>
-    </td>
+    </th>
     <% @jobs.each do |job| %>
     <td class="job<%= job[:id] %>"></td>
     <% end %>
@@ -68,7 +68,7 @@
   </tr>
   <% end %>
   <tr class="total">
-    <td>Total</td>
+    <th>Total</th>
         <% @jobs.each do |job| %>
     <td class="job<%= job[:id] %>"></td>
     <% end %>
@@ -107,7 +107,7 @@
   </tr>
 
 <% end %>
-
+<tr class="totals"><td>Total:</td><td></td><td></td><td></td><td class="length"></td><td></td></tr>
 </table>
 
 
@@ -151,7 +151,7 @@
        total =  0;
        var totals = {};
 
-
+      $('#periods tr').show()
        $.each(json, function(n) {
         if(json[n].length && json[n].in >= startdate && json[n].out <= enddate) {
           var employeeId = json[n].employee.id;
@@ -167,13 +167,15 @@
 
           total += json[n].length
         }
+        else {
+          $('#periods tr:eq(' + (n+1) + ')').hide()
+        }
 
        })
 
-       totalRow = $(jQuery('<tr class="totals"><td>Total:</td><td></td><td></td><td></td><td>' + (total).toFixed(2) + '</td><td></td></tr>'))
-       
-       $('#periods .totals').remove()
-       $('#periods tbody').append(totalRow)
+
+      $('#matrix td').html('')
+       $('#periods .totals .length').html((total).toFixed(2))
 
        $('#matrix td').last().html((total).toFixed(2));
 
