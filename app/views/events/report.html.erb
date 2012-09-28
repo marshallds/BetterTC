@@ -113,25 +113,11 @@
 
 
 
-  <script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
+<script type="text/javascript" charset="utf-8">
+  $(document).ready(function() {
 
-       var startdate = updateDate('start')
-       var enddate = updateDate('end')
 
-      $('[id^=startdate]').change(function() {
-        startdate = updateDate('start');
-        calcTotals(startdate,enddate)
-      })
-      $('[id^=enddate]').change(function() {
-        enddate = updateDate('end');
-        calcTotals(startdate,enddate)
-      })
-
-      calcTotals(startdate,enddate);
-    });
-
-    function updateDate(startOrEnd) {
+    var updateDate = function (startOrEnd) {
       var newdate = "20"
 
       for (var i = 1; i<=5; i++) {
@@ -146,7 +132,7 @@
       return newdate
     }
 
-    function calcTotals(startdate,enddate) {
+    var calcTotals = function (startdate,enddate) {
       $.getJSON("report.json", function(json){
        total =  0;
        var totals = {};
@@ -156,14 +142,10 @@
         if(json[n].length && json[n].in >= startdate && json[n].out <= enddate) {
           var employeeId = json[n].employee.id;
           var jobId = json[n].job.id;
-          if(totals[employeeId]) {
-            if(totals[employeeId][jobId]) {totals[employeeId][jobId] += json[n].length}
-            else {totals[employeeId][jobId] = json[n].length}
-          }
-          else {
-            totals[employeeId] = {};         
-            totals[employeeId][jobId] = json[n].length
-          }
+          if(!totals[employeeId]) totals[employeeId] = {}  //initialize
+          if(!totals[employeeId][jobId]) totals[employeeId][jobId] = 0 //initialize
+
+          totals[employeeId][jobId] += json[n].length
 
           total += json[n].length
         }
@@ -180,21 +162,39 @@
        $('#matrix td').last().html((total).toFixed(2));
 
        totals['job'] = {}
-       for (var employee in totals) {
+       $.each(totals, function(employee,values) {
          totals['employee'] = 0
-        for (var job in totals[employee]) {
+        $.each(totals[employee], function(job,values) {
           var cell = $('#employee' + employee + ' .job' + job)
           cell.html(totals[employee][job].toFixed(2))
           totals['employee'] += totals[employee][job]
           if (totals['job'][job]  && employee != 'job') {totals['job'][job] += totals[employee][job]}
           else  {totals['job'][job] = totals[employee][job]}
-        }
+        });
         $('#employee' + employee + ' .total').html(totals['employee'].toFixed(2))
-       }
-       for (var job in totals['job']) {
+       });
+       $.each(totals['job'], function(job, values) {
         $('.total' + ' .job' + job).html(totals['job'][job].toFixed(2))
-       }
+       });
      });
 
     }
-  </script>
+
+
+    var startdate = updateDate('start')
+    var enddate = updateDate('end')
+
+    $('[id^=startdate]').change(function() {
+      startdate = updateDate('start');
+      calcTotals(startdate,enddate)
+    })
+    $('[id^=enddate]').change(function() {
+      enddate = updateDate('end');
+      calcTotals(startdate,enddate)
+    })
+
+    calcTotals(startdate,enddate);
+
+  });
+
+</script>
