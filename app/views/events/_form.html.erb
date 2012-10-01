@@ -13,7 +13,7 @@
 
   <div class="field">
     <%= f.label :employee %><br />
-    <%= collection_select(:event, :employee_id, @users, :id, :firstname, :prompt => true, :selected => @event.employee_id) %>  
+    <%= collection_select(:event, :employee_id, @users, :id, :firstname, :prompt => true, :selected => @lastevent.employee_id) %>  
   </div>
   <div class="field">
     <%= f.label :job %><br />
