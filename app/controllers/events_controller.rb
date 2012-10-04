@@ -32,7 +32,13 @@ class EventsController < ApplicationController
     @lastevent = Event.where({:employee_id => params[:employee_id]}).last || Event.last
 
 
-    @lastevent.employee_id = params[:employee_id] || nil
+    begin
+      @lastevent.employee_id = params[:employee_id] || nil 
+      
+    rescue Exception => e
+      @lastevent = Event.build
+      @lastevent.employee_id = params[:employee_id] || nil
+    end
     if params[:job_id] then @event.job_id = params[:job_id] 
     elsif @lastevent then @event.job_id = @lastevent.job_id
     else @event.job_id = nil
