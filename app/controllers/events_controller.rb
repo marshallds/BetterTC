@@ -36,7 +36,7 @@ class EventsController < ApplicationController
       @lastevent.employee_id = params[:employee_id] || nil 
       
     rescue Exception => e
-      @lastevent = Event.build
+      @lastevent = Event.new
       @lastevent.employee_id = params[:employee_id] || nil
     end
     if params[:job_id] then @event.job_id = params[:job_id] 
