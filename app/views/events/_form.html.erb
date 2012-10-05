@@ -12,29 +12,29 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :employee %><br />
+    <%= f.label :employee %>
     <%= collection_select(:event, :employee_id, @users, :id, :firstname, :prompt => true, :selected => @lastevent.employee_id) %>  
   </div>
   <div class="field">
-    <%= f.label :job %><br />
+    <%= f.label :job %>
     <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => true, :selected => @event.job_id}) %>  
   </div>
   <div class="field">
-    <%= f.label :punch_type %><br />
+    <%= f.label :punch_type %>
     <%= select(:event, :punch_type, @types, {:prompt => true, :selected => @lastevent.punch_type == "IN" ? "OUT" : "IN"}) %> 
   </div>
   <div class="field">
-    <%= f.label :punchtime %><br />
+    <%= f.label :punchtime %>
     <%= datetime_select :event, :punchtime %>
   </div>
   <% if @event.employee_id && @event.job_id %>
     <div class="field">
-    <%= f.label :log %><br />
+    <%= f.label :log %>
     <%= f.text_field :log %>
   </div>
   <% else %>
   <div class="field">
-    <%= f.label :log %><br />
+    <%= f.label :log %>
     <%= f.text_area :log %>
   </div>
   <% end %>

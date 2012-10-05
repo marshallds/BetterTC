@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.8'
 
+gem 'therubyracer'
+gem 'less-rails'
+gem 'less-rails-bootstrap'
+
 group :production do
   gem 'mysql2'
 end
