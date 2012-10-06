@@ -25,6 +25,9 @@
   </div>
   <div class="field">
     <%= f.label :punchtime %>
+    <%= f.text_field :punch_date, :class => 'datepicker', :size => 10, :maxlength => 10 %> 
+    <%= f.text_field :punch_time, :size => 5, :maxlength => 5 %> 
+
     <%= datetime_select :event, :punchtime %>
   </div>
   <% if @event.employee_id && @event.job_id %>
@@ -35,10 +38,12 @@
   <% else %>
   <div class="field">
     <%= f.label :log %>
-    <%= f.text_area :log %>
+    <%= f.text_area(:log, { :rows => 4}) %>
   </div>
   <% end %>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit( :class => 'btn btn-primary' ) %>
   </div>
 <% end %>
+
+
