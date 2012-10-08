@@ -25,6 +25,9 @@ class EventsController < ApplicationController
   # GET /events/new
   # GET /events/new.json
   def new
+
+
+    
     @event = Event.new
     @jobs = Job.where({:active => true})
     @users = Employee.order(:lastname)
@@ -53,6 +56,7 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     @event = Event.find(params[:id])
+    @lastevent = @event
     @jobs = Job.where({:active => true})
     @users = Employee.order(:firstname)
     @types = ['IN','OUT','LOG']

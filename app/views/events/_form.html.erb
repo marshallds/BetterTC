@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     <%= f.label :punch_type %>
-    <%= select(:event, :punch_type, @types, {:prompt => true, :selected => @lastevent.punch_type == "IN" ? "OUT" : "IN"}) %> 
+    <%= select(:event, :punch_type, @types, {:prompt => true, :selected => @event.punch_type ? @event.punch_type : @lastevent.punch_type == "IN" ? "OUT" : "IN"}) %> 
   </div>
   <div class="field">
     <%= f.label :punchtime %>
