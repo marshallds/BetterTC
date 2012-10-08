@@ -48,7 +48,7 @@
     End Date
     <%= datetime_select("enddate","",) %>
   </div>
-<table id="matrix">
+<table id="matrix" class="table">
   <tr>
     <th></th>
     <% @jobs.each do |job| %>
@@ -84,7 +84,7 @@
 <div class="field">
     <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => true}) %>  
 </div>
-<table id="periods">
+<table id="periods" class="table">
   <tr>
     <th>User</th>
     <th>Job</th>
