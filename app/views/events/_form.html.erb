@@ -19,16 +19,12 @@
     <%= f.label :job %>
     <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => true, :selected => @event.job_id}) %>  
   </div>
-  <div class="field">
+  <div class="field controls-row">
     <%= f.label :punch_type %>
-    <%= select(:event, :punch_type, @types, {:prompt => true, :selected => @event.punch_type ? @event.punch_type : @lastevent.punch_type == "IN" ? "OUT" : "IN"}) %> 
-  </div>
-  <div class="field">
-    <%= f.label :punchtime %>
-    <%= f.text_field :punch_date, :class => 'datepicker', :size => 10, :maxlength => 10 %> 
-    <%= f.text_field :punch_time, :size => 5, :maxlength => 5 %> 
+    <%= select(:event, :punch_type, @types, {:prompt => true, :selected => @event.punch_type ? @event.punch_type : @lastevent.punch_type == "IN" ? "OUT" : "IN"}, :class => 'span2') %> 
 
-    <%= datetime_select :event, :punchtime %>
+    <%= f.text_field :punch_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
+    <%= f.text_field :punch_time, :size => 5, :maxlength => 5, :class => 'span1' %> 
   </div>
   <% if @event.employee_id && @event.job_id %>
     <div class="field">
@@ -38,7 +34,7 @@
   <% else %>
   <div class="field">
     <%= f.label :log %>
-    <%= f.text_area(:log, { :rows => 4}) %>
+    <%= f.text_area(:log, { :rows => 4, :class => 'span5'}) %>
   </div>
   <% end %>
   <div class="actions">
