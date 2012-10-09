@@ -60,6 +60,6 @@ module BetterTC
     config.assets.version = '1.0'
 
 
-    # config.time_zone = 'MDT'
+    config.time_zone = 'Mountain Time (US & Canada)'
   end
 end
