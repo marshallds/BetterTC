@@ -17,7 +17,7 @@
     <td><%= event.job.name if event.job %></td>
     <td><%= event.punch_type %></td>
     <td><%= event.punchtime %></td>
-    <td><%= event.log %></td>
+    <td class="span5"><%= event.log %></td>
     <td><%= link_to 'S', event %> &nbsp; <%= link_to 'E', edit_event_path(event) %> &nbsp; <%= link_to 'D', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
