@@ -27,7 +27,7 @@ class EventsController < ApplicationController
   def new
 
 
-    
+
     @event = Event.new
     @jobs = Job.where({:active => true})
     @users = Employee.order(:lastname)
@@ -111,22 +111,22 @@ class EventsController < ApplicationController
   def periods
     rows = Array.new
     Employee.all.each do |employee| # loop though employees
-      rows.push Hash.new
       events = employee.events.order :punchtime
+      rows.push Hash.new if events.count > 0
       events.each do |event| # loop though events (events are in clock order)
         if event.punch_type == "IN" || event.punch_type == 'OUT' then
-          # if there an open row: uh oh, event.punchtime to currentrow.out
+
           rows.push Hash.new if ! rows.length == 0 || ! (rows.last.kind_of? Hash) || rows.last[:out]
-          # event.punchtime to newrow.in; event.job_id to newrow.job
+
           if rows.last[:in] then
             rows[-1][:out] = event.punchtime
-            rows[-1][:length] = (rows.last[:out] - rows.last[:in])/3600
+            rows[-1][:length] = (rows.last[:out] - rows.last[:in])/3600 if rows.last[:out] > rows.last[:in] 
           else
             rows[-1][:in] = event.punchtime
             rows[-1][:employee] = event.employee
           end
         end
-        # event.job to newrow.job
+
         if rows.last[:job] then
           if event.job != rows.last[:job] then
             rows.push Hash.new

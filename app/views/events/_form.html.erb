@@ -29,7 +29,7 @@
   <% if @event.employee_id && @event.job_id %>
     <div class="field">
     <%= f.label :log %>
-    <%= f.text_field :log %>
+    <%= f.text_field :log, :class => 'span5' %>
   </div>
   <% else %>
   <div class="field">

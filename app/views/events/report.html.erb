@@ -40,13 +40,14 @@
 <br />
 
 <h2>Totals matrix</h2>
-  <div class="field">
-    Start Date
-    <%= datetime_select("startdate","",:default => 7.days.ago.at_midnight) %>
-  </div>
-  <div class="field">
-    End Date
-    <%= datetime_select("enddate","",) %>
+  <div class="span2">
+    <%= label "startdate", "Start Date" %>
+    <%= text_field "startdate","",:value => 7.days.ago.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
+</div>
+
+  <div class="span2">
+    <%= label "enddate", "End Date" %>
+    <%= text_field "enddate","",:value => 1.day.from_now.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
   </div>
 <table id="matrix" class="table">
   <tr>
@@ -117,17 +118,8 @@
   $(document).ready(function() {
 
 
-    var updateDate = function (startOrEnd) {
-      var newdate = "20"
-
-      for (var i = 1; i<=5; i++) {
-        if (startOrEnd == 'start') {newdate += ("0" + $('#startdate__' + i +'i').val()).slice(-2)}
-        else if (startOrEnd == 'end') {newdate += ("0" + $('#enddate__' + i +'i').val()).slice(-2)}
-
-        if (i == 1 || i == 2) {newdate += "-"}
-        else if (i == 3) {newdate += " "}
-        else if (i == 4) {newdate += ":"}
-      }
+    var updateDate = function (sourceID) {
+      var newdate = $('#' + sourceID + '_').val() + "-00:00"
 
       return newdate
     }
@@ -181,15 +173,15 @@
     }
 
 
-    var startdate = updateDate('start')
-    var enddate = updateDate('end')
+    var startdate = updateDate('startdate')
+    var enddate = updateDate('enddate')
 
     $('[id^=startdate]').change(function() {
-      startdate = updateDate('start');
+      startdate = updateDate('startdate');
       calcTotals(startdate,enddate)
     })
     $('[id^=enddate]').change(function() {
-      enddate = updateDate('end');
+      enddate = updateDate('enddate');
       calcTotals(startdate,enddate)
     })
 
