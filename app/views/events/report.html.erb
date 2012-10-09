@@ -1,45 +1,5 @@
 <h1>Report</h1>
-
-<h2>Totals By Job</h2>
-<table>
-  <tr>
-    <th>Job</th>
-    <th>Total Hours</th>
-  </tr>
-
-<% job_totals.each do |total| %>
-  <tr>
-    <td><%= total.name %></td>
-    <td><%= '%.2f' % total.hours %></td>
-  </tr>
-
-<% end %>
-
-</table>
-<br>
-<table>
-  <tr>
-  	    <th>Job</th>
-
-<% job_totals.each do |total| %>
-    <th><%= total.name %></th>
-
-<% end %>
-  </tr>
-<tr>
-	    <th>Total Hours</th>
-<% job_totals.each do |total| %>
-    <td><%= '%.2f' % total.hours %></td>
-
-<% end %>
-  </tr>
-
-
-</table>
-
-<br />
-
-<h2>Totals matrix</h2>
+<div class="controls controls-row">
   <div class="span2">
     <%= label "startdate", "Start Date" %>
     <%= text_field "startdate","",:value => 7.days.ago.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
@@ -49,9 +9,9 @@
     <%= label "enddate", "End Date" %>
     <%= text_field "enddate","",:value => 1.day.from_now.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
   </div>
-<div class="span3">
+<div class="span2">
     <%= label "dateRange", "Date Range" %>
-  <select id="dateRange">
+  <select id="dateRange" class="span2">
     <option value="custom">Custom</option>
     <option value="lastWeek" startdate="<%= 7.days.ago.beginning_of_week.to_date %>" enddate="<%= Date.today.beginning_of_week %>">Last Week</option>
     <option value="thisWeek" startdate="<%= Date.today.beginning_of_week %>" enddate="<%= Date.today.end_of_week %>">This Week</option>
@@ -59,6 +19,15 @@
     <option value="thisMonth" startdate="<%= Date.today.beginning_of_month %>" enddate="<%= Date.today.end_of_month %>">This Month</option>
     <option value="thisYear" startdate="<%= Date.today.beginning_of_year %>" enddate="<%= Date.today.end_of_year %>">This Year</option>
   </select>
+</div>
+  <div class="span2">
+    <%= label "dateRange", "Date Range" %>
+    <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:prompt => "Select Employee" }, {:class => "span2"}) %>  
+</div>
+<div class="span3">
+    <%= label "dateRange", "Date Range" %>
+    <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => "Select Job"}) %>  
+</div>
 </div>
 <table id="matrix" class="table">
   <tr>
@@ -89,13 +58,7 @@
 </table>
 
 
-<h2>All Events</h2>	
-	<div class="field span3">
-    <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:prompt => "Select Employee"}) %>  
-</div>
-<div class="field span3">
-    <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => "Select Job"}) %>  
-</div>
+<h2>Punch Periods</h2>	
 <table id="periods" class="table">
   <tr>
     <th>User</th>
