@@ -49,6 +49,17 @@
     <%= label "enddate", "End Date" %>
     <%= text_field "enddate","",:value => 1.day.from_now.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
   </div>
+<div class="span3">
+    <%= label "dateRange", "Date Range" %>
+  <select id="dateRange">
+    <option value="custom">Custom</option>
+    <option value="lastWeek" startdate="<%= 7.days.ago.beginning_of_week.to_date %>" enddate="<%= Date.today.beginning_of_week %>">Last Week</option>
+    <option value="thisWeek" startdate="<%= Date.today.beginning_of_week %>" enddate="<%= Date.today.end_of_week %>">This Week</option>
+    <option value="lastMonth" startdate="<%= 1.month.ago.beginning_of_month.to_date %>" enddate="<%= Date.today.beginning_of_month %>">Last Month</option>
+    <option value="thisMonth" startdate="<%= Date.today.beginning_of_month %>" enddate="<%= Date.today.end_of_month %>">This Month</option>
+    <option value="thisYear" startdate="<%= Date.today.beginning_of_year %>" enddate="<%= Date.today.end_of_year %>">This Year</option>
+  </select>
+</div>
 <table id="matrix" class="table">
   <tr>
     <th></th>
@@ -79,11 +90,11 @@
 
 
 <h2>All Events</h2>	
-	<div class="field">
-    <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:prompt => true}) %>  
+	<div class="field span3">
+    <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:prompt => "Select Employee"}) %>  
 </div>
-<div class="field">
-    <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => true}) %>  
+<div class="field span3">
+    <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => "Select Job"}) %>  
 </div>
 <table id="periods" class="table">
   <tr>
@@ -131,7 +142,7 @@
 
       $('#periods tr').show()
        $.each(json, function(n) {
-        if(json[n].length && json[n].in >= startdate && json[n].out <= enddate) {
+        if(json[n].length && json[n].in >= startdate && json[n].out <= enddate && (json[n].employee.id == $('#event_employee_id :selected').val() || $('#event_employee_id :selected').val() == '' ) && (json[n].job.id == $('#event_job_id :selected').val() || $('#event_job_id :selected').val() == '' )) {
           var employeeId = json[n].employee.id;
           var jobId = json[n].job.id;
           if(!totals[employeeId]) totals[employeeId] = {}  //initialize
@@ -183,6 +194,22 @@
     $('[id^=enddate]').change(function() {
       enddate = updateDate('enddate');
       calcTotals(startdate,enddate)
+    })
+
+    $('#dateRange').change(function() {
+      if ($('#dateRange :selected').attr('startdate')) {
+        $('#startdate_').val($('#dateRange :selected').attr('startdate'))
+        $('#enddate_').val($('#dateRange :selected').attr('enddate'))
+      }
+
+      startdate = updateDate('startdate')
+      enddate = updateDate('enddate')
+      calcTotals(startdate,enddate);
+
+    })
+    $('#event_employee_id, #event_job_id').change(function() {
+      calcTotals(startdate,enddate);
+
     })
 
     calcTotals(startdate,enddate);
