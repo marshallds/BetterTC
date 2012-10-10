@@ -147,10 +147,9 @@
     }
 
     var truncateLogs = function() {
-      var moreLink = $('<a href="#" class="moreLink">more...</a>');
       $('#periods .pre').each(function(n) {
         if ($(this).height() > 44) {
-          $(this).wrapInner('<div class="truncate" />').append(moreLink)
+          $(this).wrapInner('<div class="truncate" />').append('<a href="#" class="moreLink">more...</a>')
         }
       });
       $('.moreLink').click(function () {
@@ -164,9 +163,6 @@
             $(this).siblings().removeClass('truncate');
         }
       })
-    }
-    var unTruncate = function() {
-      $(this).parent()
     }
 
 
