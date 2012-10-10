@@ -135,7 +135,7 @@ class EventsController < ApplicationController
           end
         end
         rows[-1][:job] = event.job 
-        rows[-1][:log] = (rows[-1][:log] || "" ) + ("\n" + event.log) if event.log
+        rows[-1][:log] = (rows[-1][:log] || "" ) + (event.log + "\n" ) if event.log.length > 0
 
       end
     end

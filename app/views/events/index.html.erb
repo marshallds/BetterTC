@@ -18,7 +18,7 @@
     <td><%= event.punch_type %></td>
     <td><%= event.punchtime %></td>
     <td class="span5"><%= event.log %></td>
-    <td><%= link_to 'S', event %> &nbsp; <%= link_to 'E', edit_event_path(event) %> &nbsp; <%= link_to 'D', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to '<i class="icon-eye-open"></i>'.html_safe, event %> <%= link_to '<i class="icon-edit"></i>'.html_safe, edit_event_path(event) %> <%= link_to '<i class="icon-trash"></i>'.html_safe, event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>

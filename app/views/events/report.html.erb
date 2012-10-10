@@ -21,11 +21,11 @@
   </select>
 </div>
   <div class="span2">
-    <%= label "dateRange", "Date Range" %>
+    <%= label :employee, "Filters:" %>
     <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:prompt => "Select Employee" }, {:class => "span2"}) %>  
 </div>
 <div class="span3">
-    <%= label "dateRange", "Date Range" %>
+    <%= label :job, "." %>
     <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => "Select Job"}) %>  
 </div>
 </div>
@@ -72,12 +72,12 @@
 
 <% @periods.each do |period| %>
   <tr>
-    <td><%= period[:employee].firstname %> <%= period[:employee].lastname %></td>
+    <td><%= period[:employee].firstname %></td>
     <td><%= period[:job].name %></td>
     <td><%= period[:in] %></td>
     <td><%= period[:out] %></td>
     <td><%= '%.2f' % period[:length] if period[:length] != nil %></td>
-    <td><%= period[:log] %></td>
+    <td class="pre"><%= period[:log] %></td>
 
   </tr>
 
