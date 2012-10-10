@@ -106,6 +106,7 @@
       $('#periods tr').show()
        $.each(json, function(n) {
         if(json[n].length && json[n].in >= startdate && json[n].out <= enddate && (json[n].employee.id == $('#event_employee_id :selected').val() || $('#event_employee_id :selected').val() == '' ) && (json[n].job.id == $('#event_job_id :selected').val() || $('#event_job_id :selected').val() == '' )) {
+          console.log('json emp:' + json[n].employee.firstname + " selected id:" + $('#event_employee_id :selected').val())
           var employeeId = json[n].employee.id;
           var jobId = json[n].job.id;
           if(!totals[employeeId]) totals[employeeId] = {}  //initialize

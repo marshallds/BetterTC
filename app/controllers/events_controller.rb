@@ -139,7 +139,7 @@ class EventsController < ApplicationController
 
       end
     end
-    rows
+    rows.sort_by{|e| e[:in]}
   end
 
 
@@ -153,7 +153,7 @@ class EventsController < ApplicationController
     @jobs = Job.where({:active => true})
     @employees = Employee.order(:lastname)
 
-    @periods = periods.sort_by{|e| e[:in]}
+    @periods = periods #.sort_by{|e| e[:in]}
 
     respond_to do |format|
       format.html # report.html.erb
