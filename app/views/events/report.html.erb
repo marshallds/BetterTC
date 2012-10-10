@@ -92,111 +92,22 @@
   $(document).ready(function() {
 
 
-    var updateDate = function (sourceID) {
-      var newdate = $('#' + sourceID + '_').val() + "-00:00"
-
-      return newdate
-    }
-
-    var calcTotals = function (startdate,enddate) {
-      $.getJSON("report.json", function(json){
-       total =  0;
-       var totals = {};
-
-      $('#periods tr').show()
-       $.each(json, function(n) {
-        if(json[n].length && json[n].in >= startdate && json[n].out <= enddate && (json[n].employee.id == $('#event_employee_id :selected').val() || $('#event_employee_id :selected').val() == '' ) && (json[n].job.id == $('#event_job_id :selected').val() || $('#event_job_id :selected').val() == '' )) {
-          console.log('json emp:' + json[n].employee.firstname + " selected id:" + $('#event_employee_id :selected').val())
-          var employeeId = json[n].employee.id;
-          var jobId = json[n].job.id;
-          if(!totals[employeeId]) totals[employeeId] = {}  //initialize
-          if(!totals[employeeId][jobId]) totals[employeeId][jobId] = 0 //initialize
-
-          totals[employeeId][jobId] += json[n].length
-
-          total += json[n].length
-        }
-        else {
-          $('#periods tr:eq(' + (n+1) + ')').hide()
-        }
-
-       })
-
-
-      $('#matrix td').html('')
-       $('#periods .totals .length').html((total).toFixed(2))
-
-       $('#matrix td').last().html((total).toFixed(2));
-
-       totals['job'] = {}
-       $.each(totals, function(employee,values) {
-         totals['employee'] = 0
-        $.each(totals[employee], function(job,values) {
-          var cell = $('#employee' + employee + ' .job' + job)
-          cell.html(totals[employee][job].toFixed(2))
-          totals['employee'] += totals[employee][job]
-          if (totals['job'][job]  && employee != 'job') {totals['job'][job] += totals[employee][job]}
-          else  {totals['job'][job] = totals[employee][job]}
-        });
-        $('#employee' + employee + ' .total').html(totals['employee'].toFixed(2))
-       });
-       $.each(totals['job'], function(job, values) {
-        $('.total' + ' .job' + job).html(totals['job'][job].toFixed(2))
-       });
-     });
-
-    }
-
-    var truncateLogs = function() {
-      $('#periods .pre').each(function(n) {
-        if ($(this).height() > 44) {
-          $(this).wrapInner('<div class="truncate" />').append('<a href="#" class="moreLink">more...</a>')
-        }
-      });
-      $('.moreLink').click(function (event) {
-        event.preventDefault();
-        if($(this).hasClass("less")) {
-            $(this).removeClass("less");
-            $(this).html('more...');
-            $(this).siblings().addClass('truncate');
-        } else {
-            $(this).addClass("less");
-            $(this).html('less...');
-            $(this).siblings().removeClass('truncate');
-        }
-      })
-    }
-
-
-    var startdate = updateDate('startdate')
-    var enddate = updateDate('enddate')
-
-    $('[id^=startdate]').change(function() {
-      startdate = updateDate('startdate');
-      calcTotals(startdate,enddate)
-    })
-    $('[id^=enddate]').change(function() {
-      enddate = updateDate('enddate');
-      calcTotals(startdate,enddate)
-    })
-
     $('#dateRange').change(function() {
       if ($('#dateRange :selected').attr('startdate')) {
         $('#startdate_').val($('#dateRange :selected').attr('startdate'))
         $('#enddate_').val($('#dateRange :selected').attr('enddate'))
       }
 
-      startdate = updateDate('startdate')
-      enddate = updateDate('enddate')
-      calcTotals(startdate,enddate);
+    });
+    $('[id^=startdate],[id^=enddate]').change(function() {
+      $('#dateRange').val('custom')
+    });
+    $('#event_employee_id, #event_job_id,#dateRange,[id^=startdate],[id^=enddate]').change(function() {
+      calcTotals();
+    });
 
-    })
-    $('#event_employee_id, #event_job_id').change(function() {
-      calcTotals(startdate,enddate);
 
-    })
-
-    calcTotals(startdate,enddate);
+    calcTotals();
     truncateLogs();
 
   });
