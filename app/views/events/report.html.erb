@@ -152,7 +152,8 @@
           $(this).wrapInner('<div class="truncate" />').append('<a href="#" class="moreLink">more...</a>')
         }
       });
-      $('.moreLink').click(function () {
+      $('.moreLink').click(function (event) {
+        event.preventDefault();
         if($(this).hasClass("less")) {
             $(this).removeClass("less");
             $(this).html('more...');
