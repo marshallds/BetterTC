@@ -146,6 +146,29 @@
 
     }
 
+    var truncateLogs = function() {
+      var moreLink = $('<a href="#" class="moreLink">more...</a>');
+      $('#periods .pre').each(function(n) {
+        if ($(this).height() > 44) {
+          $(this).wrapInner('<div class="truncate" />').append(moreLink)
+        }
+      });
+      $('.moreLink').click(function () {
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html('more...');
+            $(this).siblings().addClass('truncate');
+        } else {
+            $(this).addClass("less");
+            $(this).html('less...');
+            $(this).siblings().removeClass('truncate');
+        }
+      })
+    }
+    var unTruncate = function() {
+      $(this).parent()
+    }
+
 
     var startdate = updateDate('startdate')
     var enddate = updateDate('enddate')
@@ -176,6 +199,7 @@
     })
 
     calcTotals(startdate,enddate);
+    truncateLogs();
 
   });
 
