@@ -9,11 +9,12 @@
 	<h3><%= @lastevent.employee.firstname %>, your last punch was</h3>
 
 	<p><strong>
-		  <%= @lastevent.punch_type %> at
-		  <%= @lastevent.punchtime %></strong>
+		  <%= @lastevent.punch_type %></strong> at <br><strong>
+		  <%= @lastevent.punchtime %></strong> <br>for <strong><%= @lastevent.job.name %></strong>
 	</p>
 
-	<p class="pre"><b>Log:</b> <%= @lastevent.log %>
+	<p class="pre"><b>Log:</b>
+<%= @lastevent.log %>
 	</p>
 </div>
 <% end %>

@@ -2,7 +2,12 @@
 
 <p>
   <b>User:</b>
-  <%= @event.employee.firstname %>
+  <%= @event.employee.firstname %> <%= @event.employee.lastname %>
+</p>
+
+<p>
+  <b>Job:</b>
+  <%= @event.job.name %>
 </p>
 
 <p>
@@ -15,12 +20,11 @@
   <%= @event.punchtime %>
 </p>
 
-<p>
-  <b>Log:</b>
-  <%= @event.log %>
+<p class="pre"><b>Log:</b>
+<%= @event.log %>
 </p>
 
 
-<%= link_to 'Edit', edit_event_path(@event) %> |
-<%= link_to 'Back', events_path %> |
-<%= link_to 'New', new_event_path(:employee_id => @event.employee_id) %>
+<%= link_to 'Edit', edit_event_path(@event), :class => 'btn' %>
+<%= link_to 'Back', events_path, :class => 'btn' %>
+<%= link_to 'New', new_event_path(:employee_id => @event.employee_id), :class => 'btn btn-primary' %>
