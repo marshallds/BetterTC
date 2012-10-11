@@ -17,9 +17,6 @@
 body {
 	color:red;
 }
-a:hover {
-	background-color:transparent !important;
-}
 
 .pre {
 	white-space: pre-wrap;       /* css-3 */
