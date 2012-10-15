@@ -58,33 +58,23 @@
 </table>
 
 
-<h2>Punch Periods</h2>	
+
+<h2>Watermill Format</h2>  
 <table id="periods" class="table">
   <tr>
-    <th>User</th>
-    <th>Job</th>
-    <th>In</th>
-    <th>Out</th>
-    <th>Length</th>
-    <th class="span5">Log</th>
+    <th>log</th>
 
   </tr>
 
 <% @periods.each do |period| %>
   <tr>
-    <td><%= period[:employee].firstname %></td>
-    <td><%= period[:job].name %></td>
-    <td><%= period[:in] %></td>
-    <td><%= period[:out] %></td>
-    <td><%= '%.2f' % period[:length] if period[:length] != nil %></td>
-    <td class="pre"><%= period[:log] %></td>
+    <td><%= period[:in].strftime('%a')[0] %>,<%= period[:in].strftime('%-m-%-d') %>,<%= period[:log] %>,<%= period[:in].strftime('%-k:%M') %>-<%= period[:out].strftime('%-k:%M') if period[:out] %></td>
 
   </tr>
 
 <% end %>
 <tr class="totals"><td>Total:</td><td></td><td></td><td></td><td class="length"></td><td></td></tr>
 </table>
-
 
 
 <script type="text/javascript" charset="utf-8">
