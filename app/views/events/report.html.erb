@@ -1,4 +1,11 @@
-<h1>Report</h1>
+<h1>Report <i class="icon-refresh" id="refreshAJAX"></i></h1>
+<h2>Current Status</h2>
+
+<% @employees.each do |employee| 
+  @lastevent = @events.where({:employee_id => params[employee.id]}).last %>
+  <%= @lastevent.employee_id if @lastevent %>
+
+<% end %>
 <div class="controls controls-row">
   <div class="span2">
     <%= label "startdate", "Start Date" %>
@@ -104,6 +111,9 @@
     $('#event_employee_id, #event_job_id,#dateRange,[id^=startdate],[id^=enddate]').change(function() {
       calcTotals();
     });
+    $('#refreshAJAX').click(function(){
+      calcTotals();
+    })
 
 
     calcTotals();

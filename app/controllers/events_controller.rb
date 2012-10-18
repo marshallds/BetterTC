@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.order :punchtime
+    @events = Event.order.reverse
     @events = @events.where :employee_id => params[:employee_id] if params[:employee_id]
 
     respond_to do |format|
@@ -153,7 +153,7 @@ class EventsController < ApplicationController
     @jobs = Job.where({:active => true})
     @employees = Employee.order(:lastname)
 
-    @periods = periods #.sort_by{|e| e[:in]}
+    @periods = periods
 
     respond_to do |format|
       format.html # report.html.erb
