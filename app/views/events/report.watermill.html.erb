@@ -68,7 +68,7 @@
 
 <% @periods.each do |period| %>
   <tr>
-    <td><%= period[:in].strftime('%a')[0] %>,<%= period[:in].strftime('%-m-%-d') %>,<%= period[:log] %>,<%= period[:in].strftime('%-k:%M') %>-<%= period[:out].strftime('%-k:%M') if period[:out] %></td>
+    <td><%= period[:in].strftime('%a')[0] %>,<%= period[:in].strftime('%-m-%-d') %>,<%= period[:log] %>,<%= period[:in].strftime('%-k:%M') %>,<%= period[:out].strftime('%-k:%M') if period[:out] %></td>
 
   </tr>
 
