@@ -3,6 +3,7 @@ BetterTC::Application.routes.draw do
       resources :events do
       collection do
         get 'report'
+        get 'report_watermill'
       end
     end
   end
@@ -12,6 +13,7 @@ BetterTC::Application.routes.draw do
   resources :events do
     collection do
       get 'report'
+      get 'report_watermill'
     end
   end
 
@@ -20,6 +22,7 @@ BetterTC::Application.routes.draw do
     resources :events do
       collection do
         get 'report'
+        get 'report_watermill'
       end
     end
   end

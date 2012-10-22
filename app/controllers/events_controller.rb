@@ -160,5 +160,22 @@ class EventsController < ApplicationController
       format.json { render json: periods }
     end
   end
+    # Report for Watermill view
+  # GET /events/report_watermill
+  def report_watermill
+    @events = Event.order :punchtime
+    @events = @events.where :employee_id => params[:employee_id] if params[:employee_id]
+    @events = @events.where :job_id => params[:job_id] if params[:job_id]
+
+    @jobs = Job.where({:active => true})
+    @employees = Employee.order(:lastname)
+
+    @periods = periods
+
+    respond_to do |format|
+      format.html # report.html.erb
+      format.json { render json: periods }
+    end
+  end
 
 end

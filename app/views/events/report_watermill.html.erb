@@ -2,7 +2,7 @@
 <div class="controls controls-row">
   <div class="span2">
     <%= label "startdate", "Start Date" %>
-    <%= text_field "startdate","",:value => 7.days.ago.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
+    <%= text_field "startdate","",:value => 15.days.ago.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
 </div>
 
   <div class="span2">
@@ -22,11 +22,11 @@
 </div>
   <div class="span2">
     <%= label :employee, "Filters:" %>
-    <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:prompt => "Select Employee" }, {:class => "span2"}) %>  
+    <%= collection_select(:event, :employee_id, @employees, :id, :firstname, {:selected => "2" }, {:class => "span2"}) %>  
 </div>
 <div class="span3">
     <%= label :job, "." %>
-    <%= collection_select(:event, :job_id, @jobs, :id, :name, {:prompt => "Select Job"}) %>  
+    <%= collection_select(:event, :job_id, @jobs, :id, :name, {:selected => "2"}) %>  
 </div>
 </div>
 <table id="matrix" class="table">
@@ -73,7 +73,7 @@
   </tr>
 
 <% end %>
-<tr class="totals"><td>Total:</td><td></td><td></td><td></td><td class="length"></td><td></td></tr>
+<tr class="totals"><td class="length"></td></tr>
 </table>
 
 
