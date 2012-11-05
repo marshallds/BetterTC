@@ -9,12 +9,12 @@
 <div class="controls controls-row">
   <div class="span2">
     <%= label "startdate", "Start Date" %>
-    <%= text_field "startdate","",:value => 7.days.ago.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
+    <%= text_field "startdate","",:value => Date.today.beginning_of_week, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
 </div>
 
   <div class="span2">
     <%= label "enddate", "End Date" %>
-    <%= text_field "enddate","",:value => 1.day.from_now.at_midnight.to_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
+    <%= text_field "enddate","",:value => Date.today.end_of_week, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
   </div>
 <div class="span2">
     <%= label "dateRange", "Date Range" %>
