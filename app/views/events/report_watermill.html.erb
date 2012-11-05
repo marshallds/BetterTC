@@ -60,20 +60,34 @@
 
 
 <h2>Watermill Format</h2>  
+<div id="wperiods">
+
+</div>
+
 <table id="periods" class="table">
   <tr>
-    <th>log</th>
+    <th>User</th>
+    <th>Job</th>
+    <th>In</th>
+    <th>Out</th>
+    <th>Length</th>
+    <th class="span5">Log</th>
 
   </tr>
 
 <% @periods.each do |period| %>
   <tr>
-    <td><%= period[:in].strftime('%a')[0] %>,<%= period[:in].strftime('%-m-%-d') %>,<%= period[:log] %>,<%= period[:in].strftime('%-k:%M') %>-<%= period[:out].strftime('%-k:%M') if period[:out] %></td>
+    <td><%= period[:employee].firstname %></td>
+    <td><%= period[:job].name %></td>
+    <td><%= period[:in] %></td>
+    <td><%= period[:out] %></td>
+    <td><%= '%.2f' % period[:length] if period[:length] != nil %></td>
+    <td class="pre"><%= period[:log] %></td>
 
   </tr>
 
 <% end %>
-<tr class="totals"><td class="length"></td></tr>
+<tr class="totals"><td>Total:</td><td></td><td></td><td></td><td class="length"></td><td></td></tr>
 </table>
 
 
@@ -93,12 +107,100 @@
     });
     $('#event_employee_id, #event_job_id,#dateRange,[id^=startdate],[id^=enddate]').change(function() {
       calcTotals();
+      watermillSummary();
     });
 
 
     calcTotals();
-    truncateLogs();
+    watermillSummary();
+
+
 
   });
+
+var dateOnly = function(ISOdate) {
+    var date = new Date(ISOdate);
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0).valueOf();
+};
+var addHours = function(time, hours) {
+    var dTime = new Date(time);
+    return new Date(dTime.getTime() + hours*60*60*1000);
+};
+var roundedTime = function(datetime) {
+    var rounded = new Date(Math.round(datetime.getTime()/(15*60000))*15*60000); // rounds to nearest :15
+    return timeOnly(rounded);
+}
+var timeOnly = function(datetime) {
+  return datetime.toTimeString().substr(0,5);
+}
+var makeOutputString = function(inTime,outTime,hoursFirst,hoursLast,hoursAM,hoursPM,log) {
+  if (hoursPM == 0) {
+    hoursAM -= hoursLast
+    hoursPM = hoursLast
+  }
+  var printString = inTime.toDateString().substr(0,1) + "," + (inTime.getMonth() + 1) + "-" + inTime.getDate() + ",";
+  printString += log + ","
+  printString += roundedTime(inTime) + "-" + roundedTime(addHours(inTime,(hoursFirst + hoursAM)));
+  if (hoursLast > 0) printString += "," + roundedTime(addHours(outTime, - hoursPM)) + "-" + roundedTime(outTime);
+  return printString;
+}
+
+  var watermillSummary = function () {
+  $.getJSON("report.json", function(json){
+    var totals = {};
+
+    var lastDay = outTime = new Date(0);
+    var hoursLast = hoursAM = hoursPM = 0
+    var log = ""
+    $('#wperiods').empty();
+
+    $.each(json, function(n) { //filter the json and add values in an array
+      if(
+        json[n].length && 
+        json[n].in >= formatDate('startdate') && 
+        json[n].out <= formatDate('enddate') && 
+        (json[n].employee.id == $('#event_employee_id :selected').val() || $('#event_employee_id :selected').val() == '' ) && 
+        (json[n].job.id == $('#event_job_id :selected').val() || $('#event_job_id :selected').val() == '' )
+        ) {
+        var employeeId = json[n].employee.id;
+        var jobId = json[n].job.id;
+        if(!totals[employeeId]) totals[employeeId] = {}  //initialize
+        if(!totals[employeeId][jobId]) totals[employeeId][jobId] = 0 //initialize
+
+        totals[employeeId][jobId] += json[n].length
+
+//
+        if (dateOnly(json[n].in) == dateOnly(lastDay)) {
+          outTime = new Date(json[n].out);
+          hoursLast = json[n].length;
+          if (new Date(json[n].in).getHours() < 12 ) hoursAM += json[n].length;
+          else hoursPM += json[n].length;
+          if(json[n].log) log += json[n].log
+
+        }
+        else {
+          if (lastDay > 0) {
+
+            $('#wperiods').append($("<p>" + makeOutputString(inTime,outTime,hoursFirst,hoursLast,hoursAM,hoursPM,log) + "</p>"))
+          }
+          lastDay = new Date(json[n].in);
+          inTime = new Date(json[n].in);
+          outTime = new Date(json[n].out);
+          hoursFirst = json[n].length;
+          hoursLast = hoursAM = hoursPM = 0;
+          if(json[n].log) log = json[n].log
+          else log = ""
+        }
+        
+
+      }
+
+    })
+    
+    $('#wperiods').append($("<p>" + makeOutputString(inTime,outTime,hoursFirst,hoursLast,hoursAM,hoursPM,log) + "</p>"))
+
+
+  });
+}
 
 </script>
