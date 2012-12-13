@@ -3,14 +3,17 @@ var calcTotals = function () {
   $.getJSON("report.json", function(json){
     var totals = {};
 
-    $('#periods tr').show()
+    var selectedEmployee = $('#event_employee_id :selected').val()
+    var selectedJob = $('#event_job_id :selected').val()
+
+    $('#periods tr').removeClass('hide')
     $.each(json, function(n) { //filter the json and add values in an array
       if(
         json[n].length && 
         json[n].in >= formatDate('startdate') && 
         json[n].out <= formatDate('enddate') && 
-        (json[n].employee.id == $('#event_employee_id :selected').val() || $('#event_employee_id :selected').val() == '' ) && 
-        (json[n].job.id == $('#event_job_id :selected').val() || $('#event_job_id :selected').val() == '' )
+        (json[n].employee.id == selectedEmployee || selectedEmployee == '' ) && 
+        (json[n].job.id == selectedJob || selectedJob == '' )
         ) {
         var employeeId = json[n].employee.id;
         var jobId = json[n].job.id;
@@ -20,7 +23,7 @@ var calcTotals = function () {
         totals[employeeId][jobId] += json[n].length
       }
       else {
-        $('#periods tr:eq(' + (n+1) + ')').hide() // if it fails the filter, hide the row
+        $('#periods tr:eq(' + (n+1) + ')').addClass('hide') // if it fails the filter, hide the row
       }
     })
 
