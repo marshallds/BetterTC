@@ -22,7 +22,7 @@
 </div>
   <div class="span2">
     <%= label :employee, "Filters:" %>
-    <%= collection_select(:event, :employee_id, @employees, :id, :firstname,{:selected => "2", :prompt => "Select Employee" }, {:class => "span2"}) %>  
+    <%= collection_select(:event, :employee_id, @employees, :id, :firstname,{:prompt => "Select Employee" }, {:class => "span2"}) %>  
 </div>
 <div class="span3">
     <%= label :job, "." %>
