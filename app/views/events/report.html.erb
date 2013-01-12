@@ -26,6 +26,7 @@
     <option value="lastMonth" startdate="<%= 1.month.ago.beginning_of_month.to_date %>" enddate="<%= Date.today.beginning_of_month %>">Last Month</option>
     <option value="thisMonth" startdate="<%= Date.today.beginning_of_month %>" enddate="<%= Date.today.end_of_month %>">This Month</option>
     <option value="thisYear" startdate="<%= Date.today.beginning_of_year %>" enddate="<%= Date.today.end_of_year %>">This Year</option>
+    <option value="thisYear" startdate="<%= 1.year.ago.beginning_of_year %>" enddate="<%= 1.year.ago.end_of_year %>">Last Year</option>
   </select>
 </div>
   <div class="span2">

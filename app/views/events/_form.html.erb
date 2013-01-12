@@ -21,7 +21,7 @@
   </div>
   <div class="field controls-row">
     <%= f.label :punch_type %>
-    <%= select(:event, :punch_type, @types, {:prompt => true, :selected => @event.punch_type ? @event.punch_type : @lastevent.punch_type == "IN" ? "OUT" : "IN"}, :class => 'span2') %> 
+    <%= select(:event, :punch_type, @types, {:prompt => true, :selected => @event.punch_type ? @event.punch_type : @lastevent.punch_type == "IN" || @lastevent.punch_type == "LOG"  ? "OUT" : "IN"}, :class => 'span2') %> 
 
     <%= f.text_field :punch_date, :class => 'datepicker span2', :size => 10, :maxlength => 10 %> 
     <%= f.text_field :punch_time, :size => 5, :maxlength => 5, :class => 'span1' %> 

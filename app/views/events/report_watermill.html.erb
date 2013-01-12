@@ -60,9 +60,9 @@
 
 
 <h2>Watermill Format</h2>  
-<div id="wperiods">
+<pre id="wperiods">
 
-</div>
+</pre>
 
 <table id="periods" class="table">
   <tr>
@@ -138,10 +138,11 @@ var makeOutputString = function(inTime,outTime,hoursFirst,hoursLast,hoursAM,hour
     hoursAM -= hoursLast
     hoursPM = hoursLast
   }
-  var printString = inTime.toDateString().substr(0,1) + "," + (inTime.getMonth() + 1) + "-" + inTime.getDate() + ",";
-  printString += log + ","
-  printString += roundedTime(inTime) + "-" + roundedTime(addHours(inTime,(hoursFirst + hoursAM)));
-  if (hoursLast > 0) printString += "," + roundedTime(addHours(outTime, - hoursPM)) + "-" + roundedTime(outTime);
+  var dayOfTheWeek = (inTime.toDateString().substr(0,3) == "Thu") ? "Th" : inTime.toDateString().substr(0,1)
+  var printString = dayOfTheWeek + ", " + (inTime.getMonth() + 1) + "-" + inTime.getDate() + ", ";
+  printString += log.replace(/[,|\r\n|\n|\r]/gm," ") + ", \t";
+  printString += roundedTime(inTime) + ", " + roundedTime(addHours(inTime,(hoursFirst + hoursAM)));
+  if (hoursLast > 0) printString += ", " + roundedTime(addHours(outTime, - hoursPM)) + ", " + roundedTime(outTime);
   return printString;
 }
 
