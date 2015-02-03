@@ -3,6 +3,9 @@ class Event < ActiveRecord::Base
   belongs_to :job
   attr_accessible :log, :punchtime, :punch_type, :job_id, :employee_id, :punch_date, :punch_time
 
+  validates_presence_of :employee
+  validates_presence_of :job
+
   attr_accessor :punch_date, :punch_time
 
   # add some callbacks
@@ -18,7 +21,7 @@ class Event < ActiveRecord::Base
 
   def set_datetimes
     self.punchtime = "#{self.punch_date} #{self.punch_time}:00" # convert the two fields back to db
-  end  
+  end
 
   validates_format_of :punch_time, :with => /\d{1,2}:\d{2}/
 
